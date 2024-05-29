@@ -1,0 +1,9 @@
+Each experiment will be under it's own directory (data/exp_name).
+In data/exp_name there will be directory called 'original' which will contain (only) the relevant files from the
+experiment as we got them from the authors. As well as 3 independent files, which we created from them:
+1. Feature table of samples x Taxonomic species
+2. Feature table of samples x metabolites (molecule annotation)
+3. Meta-data mapping sample-id to control/not-control, host identity, number of sample from this host.
+
+There are other metadata and data about the metabolite annotation that will not be included in our extracted files
+(such as confidence level of the annotation). Also, we drop missing annotations and outliers.

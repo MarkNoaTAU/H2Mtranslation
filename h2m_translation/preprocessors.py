@@ -39,8 +39,8 @@ def preprocess_filter_rare_metabolite(metabolite_features: pd.DataFrame, verbose
 
 
 class MetabolitePreprocessor(object):
-    _HMDB_IDS_TO_NAME_PATH = '//map_hmdb_id_to_name.pkl'
-    _HMDB_NAMES_DESCRIPTION_PATH = '//hmdb_name_and_description.pkl'
+    _HMDB_IDS_TO_NAME_PATH = '../../map_hmdb_id_to_name.pkl'
+    _HMDB_NAMES_DESCRIPTION_PATH = '../../hmdb_name_and_description.pkl'
 
     """
     Metabolite preprocessor.

@@ -45,29 +45,28 @@ def preprocess_filter_rare_taxa(taxa: pd.DataFrame, verbose=True, percentage=10)
 def plot_rare_taxa_statistics_relative_abundance(taxa, abundance_threshold):
     plt.rc('xtick', labelsize=6)
     ((((taxa > abundance_threshold).sum(axis=0)) / taxa.shape[0]) * 100).round(0).sort_values(
-        ascending=True).plot.bar(figsize=(16, 6), title='% samples non-zero value observed, per taxa.')
+        ascending=True).plot.bar(figsize=(16, 6), title='% samples above abundance_threshold value observed, per taxa.')
     plt.show()
     ((taxa > abundance_threshold).sum(axis=0)).sort_values(ascending=True).plot.bar(
-        figsize=(16, 6), title='#number of samples non-zero value observed, per taxa.')
+        figsize=(16, 6), title='#number of sample above abundance_threshold value observed, per taxa.')
     plt.show()
     ((taxa > abundance_threshold).sum(axis=0)).plot.hist(
-        title='number of non-zero samples per genus')
+        title='number of samples above threshold per genus')
     plt.show()
 
 
 def preprocess_filter_rare_taxa_relative_abundance(taxa: pd.DataFrame, verbose=True, percentage=10,
-                                                   abundance_threshold=0.000001) -> pd.DataFrame:
+                                                   abundance_threshold=0.001) -> pd.DataFrame:
     """
     Preprocess the taxonomy: remove rare taxa.
-    Taxa that was found in <percentage of the samples is being removed.
-    Here, we filter according to non-zero values, on observed abundance, but it's more common to filter to
-    some very small threshold on relative abundance to be less sensitive to sampling noise.
-    If verbose, plot and print statistics.
+    Taxa that her quantile (set by quantile parameter, default 10) relative abundance is smaller than
+    abundance threshold is filtered out. AKA we filter taxa that was not sample in at least quantile of the samples
+    or that the abundance of the taxa in those samples are small.
 
     :param abundance_threshold: (float) The min relative abundance threshold for a taxa to be included in a sample.
     :param taxa:                (pd.DataFrame) Observed abundance.
     :param verbose:             (bool) Whether to plot and print statistics on the data.
-    :param percentage:          (int) The minimal percentage of samples to require.
+    :param quantile:            (int) The minimal percentage of samples to require.
     :return:                    (pd.DataFrame) Observed abundance, with rare taxa removed.
     """
     min_number_of_samples = int((taxa.shape[0] / 100) * percentage)

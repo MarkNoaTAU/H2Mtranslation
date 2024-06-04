@@ -39,8 +39,8 @@ def preprocess_filter_rare_metabolite(metabolite_features: pd.DataFrame, verbose
 
 
 class MetabolitePreprocessor(object):
-    _HMDB_IDS_TO_NAME_PATH = '../../map_hmdb_id_to_name.pkl'
-    _HMDB_NAMES_DESCRIPTION_PATH = '../../hmdb_name_and_description.pkl'
+    _HMDB_IDS_TO_NAME_PATH = 'h2m_translation/map_hmdb_id_to_name.pkl'
+    _HMDB_NAMES_DESCRIPTION_PATH = 'h2m_translation/hmdb_name_and_description.pkl'
 
     """
     Metabolite preprocessor.
@@ -61,13 +61,13 @@ class MetabolitePreprocessor(object):
         self.verbose = verbose
         self.percentage = percentage
 
-    def preprocess(self, metabolite_features, is_hmdb=True):
+    def preprocess(self, metabolite_features, is_hmdb=True, project_dir='/home/noa/lab_code/H2Mtranslation'):
         metabolite_features = preprocess_filter_rare_metabolite(metabolite_features, self.verbose, self.percentage)
         min_value_per_metabolite = metabolite_features.replace(to_replace=0, value=np.nan).min(axis=0) / 2
         metabolite_features.replace(to_replace=np.nan, value=0, inplace=True)
         metabolite_features.replace(to_replace=0, value=min_value_per_metabolite, inplace=True)
         metabolite_features = metabolite_features.apply(lambda x: np.log(x + 1))
         if is_hmdb:
-            map_hmdb_id_to_name = pd.read_pickle(MetabolitePreprocessor._HMDB_IDS_TO_NAME_PATH)
+            map_hmdb_id_to_name = pd.read_pickle(f'{project_dir}/{MetabolitePreprocessor._HMDB_IDS_TO_NAME_PATH}')
             metabolite_features = metabolite_features.rename(columns=map_hmdb_id_to_name)
         return metabolite_features

@@ -8,3 +8,4 @@ conda install -c anaconda scipy
 conda install -c conda-forge matplotlib
 conda install -c conda-forge statsmodels
 pip3 install lxml
+pip3 install xmltodict
